@@ -1,0 +1,128 @@
+{% load static %} {% load customfilter %}
+<style>
+    #video-img {
+        max-width: 100%;
+        max-height: 10em;
+        object-fit: scale-down;
+        object-position: center center;
+    }
+</style>
+<div class="container-fluid">
+    <form action="{% url 'save-video' %}" id="video-form" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ video.id }}">
+
+        <div class="mb-3">
+            <label for="sub_category" class="control-label">Category</label>
+            <select id="sub_category" name="sub_category" class="form-select form-select-sm rounded-0" required>
+                {% if not video.category %}
+                    <option disabled selected></option>
+                {% else %}
+                    <option disabled>Male</option>
+                {% endif %}
+                {% for sub_category in sub_categories %}
+                    <option value="{{ sub_category.id }}" {% if video.sub_category.id == sub_category.id %}selected{% endif %}>
+                        {{ sub_category.category }} - {{ sub_category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="control-label">Title</label>
+            <input type="text" id="title" name="title" class="form-control form-control-sm rounded-0" value="{{ video.title }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="control-label">Description</label>
+            <textarea rows="3" id="description" name="description" class="form-control form-control-sm rounded-0" required>{{ video.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="video_file" class="control-label">Video File</label>
+            <input type="file" id="video_file" name="video_file" class="form-control form-control-sm rounded-0" {% if not video.id %}required{% endif %}>
+            {% if video.video_file %}
+                <p>Current file: <a href="{{ video.fileURL }}" target="_blank">{{ video.video_file.name|original_filename }}</a></p>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="thumbnail_image" class="control-label">Thumbnail</label>
+            <input type="file" id="thumbnail_image" name="thumbnail_image" class="form-control form-control-sm rounded-0" {% if not video.id %}required{% endif %}>
+            {% if video.thumbnail_image %}
+                <p>Current file: <a href="{{ video.thumbURL }}" target="_blank">{{ video.thumbnail_image.name|original_filename }}</a></p>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="download" class="mr-sm-2 control-label">Download Permission</label>
+            <select id="download" name="download" class="form-select form-select-sm rounded-0" required>
+                <option value="1" {% if video.download == '1' %}selected{% endif %}>Yes</option>
+                <option value="2" {% if video.download == '2' %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="control-label">Status</label>
+            <select id="status" name="status" class="form-select form-select-sm rounded-0" required>
+                <option value="1" {% if video.status == '1' %}selected{% endif %}>Active</option>
+                <option value="2" {% if video.status == '2' %}selected{% endif %}>Inactive</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+</div>
+<script>
+    $(function() {
+        $('#video-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            $('.err-msg').remove();
+            var el = $('<div>').addClass("alert alert-danger err-msg").hide();
+
+            if (_this[0].checkValidity() === false) {
+                _this[0].reportValidity();
+                return false;
+            }
+
+            start_loader();
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'save-video' %}",
+                data: new FormData(_this[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                dataType: 'json',
+                error: function(err) {
+                    console.log(err);
+                    alert("An error occurred", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (resp.status === 'success') {
+                        location.reload();
+                    } else if (resp.status === 'failed' && resp.msg) {
+                        el.html(resp.msg);
+                        _this.prepend(el);
+                        el.show('slow');
+                    } else {
+                        el.text("An error occurred", 'error');
+                        _this.prepend(el);
+                        el.show('slow');
+                        console.error(resp);
+                    }
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader();
+                }
+            });
+        });
+    });
+
+</script>

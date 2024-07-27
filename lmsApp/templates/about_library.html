@@ -1,0 +1,93 @@
+{% extends 'base.html' %} <!-- Extends the base HTML template -->
+{% load static %} <!-- Loads static files for the template -->
+
+{% block pageContent %} <!-- Begins the content block for the page -->
+
+<style>
+    .section {
+        margin-bottom: 20px; /* Adds margin at the bottom of each section */
+    }
+    .section h2 {
+        font-size: 1.5em; /* Sets the font size for section headings */
+        color: #333; /* Sets the text color for section headings */
+        margin-bottom: 10px; /* Adds margin at the bottom of section headings */
+    }
+    .section p {
+        margin: 5px 0; /* Adds vertical margin for paragraphs in sections */
+        color: #555; /* Sets the text color for paragraphs in sections */
+    }
+</style>
+
+<section class="py-4"> <!-- Defines a section with padding on the top and bottom -->
+    <div class="container"> <!-- Container to center and constrain content width -->
+        <h3 class="fw-bolder text-center">About Our E-Library</h3> <!-- Section heading with bold text and centered alignment -->
+        <center>
+            <hr class="opacity-100" style="height:3px;" width="5%"> <!-- Horizontal rule with custom height and width for visual separation -->
+        </center>
+        <div class="card rounded-0 shadow"> <!-- Card with no rounded corners and shadow for visual depth -->
+            <div class="card-body"> <!-- Card body to contain main content -->
+                <div class="container-fluid"> <!-- Fluid container for flexible and responsive content -->
+
+                    <!-- Opening Times Section -->
+                    <div class="section">
+                        <h2>Opening Times</h2>
+                        <p>Monday to Friday: 8:00 AM - 10:00 PM</p>
+                        <p>Saturday: 9:00 AM - 8:00 PM</p>
+                        <p>Sunday: 10:00 AM - 6:00 PM</p>
+                    </div>
+
+                    <!-- Available Days Section -->
+                    <div class="section">
+                        <h2>Available Days</h2>
+                        <p>Our e-library is accessible 24/7 online. However, live support and chat services are available during the opening hours mentioned above.</p>
+                    </div>
+
+                    <!-- Closing Times Section -->
+                    <div class="section">
+                        <h2>Closing Times</h2>
+                        <p>Our physical support services close at the following times:</p>
+                        <p>Monday to Friday: 10:00 PM</p>
+                        <p>Saturday: 8:00 PM</p>
+                        <p>Sunday: 6:00 PM</p>
+                    </div>
+
+                    <!-- Other Information Section -->
+                    <div class="section">
+                        <h2>Other Information</h2>
+                        <p>Welcome to our e-library! Here are a few things to help you get started:</p>
+                        <ul>
+                            <li>Access a wide range of e-books, journals, and articles from our digital collection.</li>
+                            <li>Use our search tool to quickly find the resources you need in each related page.</li>
+                            <li>Send us an inquiry through the contact us page and we will reply you by email.</li>
+                            <li>Notify us if your desired book or tutorial video is not in our library and we will be sure to get it for you.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Book Categories Section -->
+                    <div class="section">
+                        <h2>Some of Our Book Categories</h2>
+                        <p>Explore our extensive e-library! Here are some of the categories you can delve into:</p>
+                        <ul>
+                            <li>Fiction: Dive into worlds of imagination with our selection of novels, short stories, and more.</li>
+                            <li>Non-Fiction: Enhance your knowledge with biographies, memoirs, and factual books on various topics.</li>
+                            <li>Science & Technology: Stay updated with the latest advancements and research in science and technology.</li>
+                            <li>History: Travel back in time and explore significant events, eras, and figures from the past.</li>
+                            <li>Children’s Books: Engage young minds with our collection of educational and entertaining books for children.</li>
+                            <li>Self-Help: Find resources to improve your personal and professional life.</li>
+                            <li>Academic Texts: Access textbooks and scholarly articles across diverse academic disciplines.</li>
+                            <li>e.t.c.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Closing Remark -->
+                    <h3 class="fw-bolder text-center">Happy Reading !!!</h3> <!-- Bold and centered closing message -->
+
+                </div> <!-- End of container-fluid -->
+            </div> <!-- End of card-body -->
+        </div> <!-- End of card -->
+    </div> <!-- End of container -->
+</section> <!-- End of section -->
+{% endblock pageContent %} <!-- Ends the content block for the page -->
+
+{% block ScriptBlock %} <!-- Optional block for additional scripts -->
+{% endblock ScriptBlock %}

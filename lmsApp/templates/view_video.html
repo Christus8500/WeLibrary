@@ -1,0 +1,74 @@
+ {% load static %} {% load humanize %}
+<style>
+    #uni_modal .modal-footer {
+        display: none
+    }
+
+    #uni_modal .modal-sub-footer {
+        display: flex
+    }
+
+    #video-img {
+        max-width: 100%;
+        max-height: 10em;
+        object-fit: scale-down;
+        object-position: center center
+    }
+
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    a:hover{
+        text-decoration: underline;
+        color: white;
+        cursor: pointer;
+    }
+
+</style>
+<div class="container-fluid" id="e-details">
+    <div class="">
+        <dl>
+            <dt>Category</dt>
+            <dd class="ps-4">{{video.sub_category.category}}</dd>
+            <dt>Sub Category</dt>
+            <dd class="ps-4">{{video.sub_category.name}}</dd>
+            <dt>Title</dt>
+            <dd class="ps-4">{{video.title}}</dd>
+            <dt>Description</dt>
+            <dd class="ps-4">{{video.description}}</dd>
+            <dt>Download Permission</dt>
+            {% if request.user.is_authenticated %}
+
+                {% if video.download == '1' %}
+                    <dd class="ps-4">Permitted</dd> {% else %}
+                    <dd class="ps-4">Not Permitted</dd>
+                {% endif %}
+
+                {% if video.download == '1' %}
+                    <a href="{{ video.fileURL }}" download class="btn btn-primary">
+                        <i class="fa-solid fa-download"></i> Download
+                    </a>
+                {% endif %}
+
+                {% if video.video_file %}
+                    <a href="{{ video.fileURL }}" target="_blank" class="btn btn-primary">
+                        <i class="fa fa-play"></i> Watch
+                    </a>
+                {% endif %}
+
+                <dt>Status</dt>
+                <dd class="ps-4">
+                    {% if video.status == '1' %}
+                        <span class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">Active</span> {% else %}
+                        <span class="badge badge-secondary bg-gradient bg-secondary px-3 rounded-pill bg-opacity-75 text-sm py-1">Inactive</span>
+                    {% endif %}
+                </dd>
+
+            {% else %}
+                <dd class="ps-4">Not Permitted, Sign Up to Access Our Videos</dd>
+            {% endif %}
+
+        </dl>
+    </div>
+</div>

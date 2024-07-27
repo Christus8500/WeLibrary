@@ -1,0 +1,76 @@
+ {% load static %} {% load humanize %}
+<style>
+    #uni_modal .modal-footer {
+        display: none
+    }
+    
+    #uni_modal .modal-sub-footer {
+        display: flex
+    }
+    
+    #book-img {
+        max-width: 100%;
+        max-height: 10em;
+        object-fit: scale-down;
+        object-position: center center
+    }
+
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    a:hover{
+        text-decoration: underline;
+        color: white;
+        cursor: pointer;
+    }
+
+</style>
+<div class="container-fluid" id="e-details">
+    <div class="">
+        <dl>
+            <dt>Category</dt>
+            <dd class="ps-4">{{book.sub_category.category}}</dd>
+            <dt>Sub Category</dt>
+            <dd class="ps-4">{{book.sub_category.name}}</dd>
+            <dt>ISBN</dt>
+            <dd class="ps-4">{{book.isbn}}</dd>
+            <dt>Title</dt>
+            <dd class="ps-4">{{book.title}}</dd>
+            <dt>Description</dt>
+            <dd class="ps-4">{{book.description}}</dd>
+            <dt>Author</dt>
+            <dd class="ps-4">{{book.author}}</dd>
+            <dt>Publisher</dt>
+            <dd class="ps-4">{{book.publisher}}</dd>
+            <dt>Date Published</dt>
+            <dd class="ps-4">{{book.date_published|date:"F d, Y h:i A"}}</dd>
+            <dt>Download Permission</dt>
+            {% if request.user.is_authenticated %}
+
+                {% if book.download == '1' %}
+                    <dd class="ps-4">Permitted</dd> {% else %}
+                    <dd class="ps-4">Not Permitted</dd>
+                {% endif %}
+
+                {% if book.download == '1' %}
+                    <a href="{{ book.fileURL }}" download class="btn btn-primary">
+                        <i class="fa-solid fa-download"></i> Download
+                    </a>
+                {% endif %}
+
+                {% if book.file %}
+                    <a href="{{ book.fileURL }}" target="_blank"  class="btn btn-primary">
+                        <i class="fa fa-book-reader"></i> Read
+                    </a>
+                {% else %}
+                    <span>Book File Currently Not Available, Check Again Later</span>
+                {% endif %}
+
+            {% else %}
+                <dd class="ps-4">Not Permitted, Sign Up to Access Our Books</dd>
+            {% endif %}
+
+        </dl>
+    </div>
+</div>

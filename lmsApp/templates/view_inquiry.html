@@ -1,0 +1,30 @@
+{% load static %} {% load humanize %}
+<style>
+    #uni_modal .modal-footer {
+        display: none
+    }
+
+    #uni_modal .modal-sub-footer {
+        display: flex
+    }
+</style>
+<div class="container-fluid" id="e-details">
+    <div class="lh-1">
+        <dl>
+            <dt>Bearer Name</dt>
+            <dd class="ps-4">{{inquiry.name}}</dd>
+            <dt>Bearer Email</dt>
+            <dd class="ps-4">{{inquiry.email}}</dd>
+            <dt>Message Topic</dt>
+            <dd class="ps-4">{{inquiry.topic}}</dd>
+            <dt>Message</dt>
+            <dd class="ps-4 mb-5">{{inquiry.message}}</dd>
+
+            <a href="mailto:{{ inquiry.email }}?subject={{ 'Inquiry Reply ('|add:inquiry.topic|add:')'|urlencode }}&body=Hello%20{{ inquiry.name|urlencode }},%0A{{ inquiry.message|urlencode }}%0A%0A....Type%20Reply%20Here%20...."
+               class="badge badge-success bg-gradient bg-success px-3 rounded-pill bg-opacity-75 text-sm py-1">
+               Reply
+            </a>
+
+        </dl>
+    </div>
+</div>

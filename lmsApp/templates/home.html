@@ -1,0 +1,193 @@
+{% extends "base.html" %} {% load humanize %} {% load customfilter %} {% block pageContent %}
+<style>
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    a:hover{
+        text-decoration: underline;
+        color: white;
+    }
+</style>
+
+<!--Section: Content-->
+<section class="">
+    <h2 class="fw-bolder">Welcome, {{request.user.first_name}}&nbsp;{{request.user.last_name}}!</h2>
+    <hr>
+
+    <div class="col-md-6 mb-3">
+        <a style="color: black; font-weight: bold;" href="{% url 'book-page' %}"> Search Books </a>
+        <span style="font-weight: bold;"> ||| </span>
+        <a style="color: black; font-weight: bold;" href="{% url 'video-page' %}"> Search Videos</a>
+    </div>
+
+    <div class="row justify-content-start">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-primary bg-gradient border-0 text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-th-list"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'category-page' %}"><h1 class="text-end">{{categories|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'category-page' %}"><div class="col-12 text-end"><b>Categories</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-dark text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-list"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'sub_category-page' %}"><h1 class="text-end">{{sub_categories|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'sub_category-page' %}"> <div class="col-12 text-end"><b>Sub Categories</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if request.user.is_superuser %}
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-success text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-user"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'student-page' %}"><h1 class="text-end">{{students|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'student-page' %}"><div class="col-12 text-end"><b>Students</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-warning text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-book"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'book-page' %}"><h1 class="text-end">{{books|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'book-page' %}"><div class="col-12 text-end"><b>Books</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-warning text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-file-video"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'video-page' %}"><h1 class="text-end">{{videos|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'video-page' %}"><div class="col-12 text-end"><b>Videos</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if request.user.is_superuser %}
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-warning text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-user-friends"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'user-page' %}"><h1 class="text-end">{{users|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'user-page' %}"><div class="col-12 text-end"><b>Total Users</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-primary text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa-solid fa-rotate"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'borrow-page' %}"><h1 class="text-end">{{pending|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'borrow-page' %}"><div class="col-12 text-end"><b>Pending Transactions</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-dark text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa-solid fa-right-to-bracket"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'borrow-page' %}"><h1 class="text-end">{{transactions|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'borrow-page' %}"><div class="col-12 text-end"><b>Total Transactions</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 px-1 pb-2">
+            <div class="card card-default rounded-0 shadow bg-gradient bg-success text-light">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mx-0 w-100 align-items-center">
+                            <div class="col-3">
+                                <i class="fs-1 text-light fa fa-question-circle"></i>
+                            </div>
+                            <div class="col-9">
+                                <a href="{% url 'inquiry-page' %}"><h1 class="text-end">{{inquiries|intcomma}}</h1></a>
+                            </div>
+                            <a href="{% url 'inquiry-page' %}"><div class="col-12 text-end"><b>Inquiries</b></div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+</section>
+</div> {% endblock pageContent %} {% block ScriptBlock %}
+<script>
+</script>
+{% endblock ScriptBlock %}

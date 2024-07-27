@@ -1,0 +1,143 @@
+{% load static %} {% load customfilter %}
+<style>
+    #book-img {
+        max-width: 100%;
+        max-height: 10em;
+        object-fit: scale-down;
+        object-position: center center;
+    }
+</style>
+<div class="container-fluid">
+    <form action="" id="book-form" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ book.id }}">
+
+        <div class="mb-3">
+            <label for="isbn" class="control-label">ISBN</label>
+            <input type="text" id="isbn" name="isbn" class="form-control form-control-sm rounded-0" value="{{ book.isbn }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="sub_category" class="control-label">Category</label>
+            <select id="sub_category" name="sub_category" class="form-select form-select-sm rounded-0" required>
+                <option value="" disabled {% if not book.sub_category %} selected {% endif %}></option>
+                {% for sub_category in sub_categories %}
+                    <option value="{{ sub_category.id }}" {% if book.sub_category.id == sub_category.id %} selected {% endif %}>
+                        {{ sub_category.category }} - {{ sub_category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="control-label">Title</label>
+            <input type="text" id="title" name="title" class="form-control form-control-sm rounded-0" value="{{ book.title }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="control-label">Description</label>
+            <textarea rows="3" id="description" name="description" class="form-control form-control-sm rounded-0" required>{{ book.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="control-label">Author/s</label>
+            <textarea rows="3" id="author" name="author" class="form-control form-control-sm rounded-0" required>{{ book.author }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="publisher" class="control-label">Publisher</label>
+            <input type="text" id="publisher" name="publisher" class="form-control form-control-sm rounded-0" value="{{ book.publisher }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="date_published" class="control-label">Date Published</label>
+            <input type="date" id="date_published" name="date_published" class="form-control form-control-sm rounded-0" value="{{ book.date_published|date:'Y-m-d' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="file" class="control-label">Book File</label>
+            <input type="file" id="file" name="file" class="form-control form-control-sm rounded-0" {% if not book.id %} required {% endif %}>
+            {% if book.file %}
+                <p>Current file: <a href="{{ book.fileURL }}" target="_blank">{{ book.file.name|original_filename }}</a></p>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="cover_image" class="control-label">Cover Image</label>
+            <input type="file" id="cover_image" name="cover_image" class="form-control form-control-sm rounded-0" {% if not book.id %} required {% endif %}>
+            {% if book.cover_image %}
+                <p>Current cover image: <a href="{{ book.imageURL }}" target="_blank">{{ book.cover_image.name|original_filename }}</a></p>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="download" class="control-label">Download Permission</label>
+            <select id="download" name="download" class="form-select form-select-sm rounded-0" required>
+                <option value="1" {% if book.download == '1' %} selected {% endif %}>Yes</option>
+                <option value="2" {% if book.download == '2' %} selected {% endif %}>No</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="control-label">Status</label>
+            <select id="status" name="status" class="form-select form-select-sm rounded-0" required>
+                <option value="1" {% if book.status == '1' %} selected {% endif %}>Active</option>
+                <option value="2" {% if book.status == '2' %} selected {% endif %}>Inactive</option>
+            </select>
+        </div>
+
+    </form>
+
+</div>
+<script>
+    $(function() {
+        $('#book-form').submit(function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            $('.err-msg').remove();
+            var el = $('<div>').addClass("alert alert-danger err-msg").hide();
+
+            if (_this[0].checkValidity() === false) {
+                _this[0].reportValidity();
+                return false;
+            }
+
+            start_loader();
+
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                url: "{% url 'save-book' %}",
+                data: new FormData(_this[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST',
+                dataType: 'json',
+                error: function(err) {
+                    console.log(err);
+                    alert("An error occurred", 'error');
+                    end_loader();
+                },
+                success: function(resp) {
+                    if (resp.status === 'success') {
+                        location.reload();
+                    } else if (resp.status === 'failed' && resp.msg) {
+                        el.html(resp.msg);
+                        _this.prepend(el);
+                        el.show('slow');
+                    } else {
+                        el.text("An error occurred", 'error');
+                        _this.prepend(el);
+                        el.show('slow');
+                        console.error(resp);
+                    }
+                    $("html, body, .modal").scrollTop(0);
+                    end_loader();
+                }
+            });
+        });
+    });
+
+</script>

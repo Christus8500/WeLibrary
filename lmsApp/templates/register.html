@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% load static %} {% block pageContent %}
+<section class="py-4">
+    <div class="container">
+        <h3 class="fw-bolder text-center">Proceed To Registration</h3>
+        <center>
+            <hr class="bg-primary opacity-100" style="height:3px" width="5%">
+        </center>
+        <div class="card rounded-0 shadow">
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="mb-3 text-center">
+                        <button class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" style="height: 45px;" type="button" id="create_new"> Continue &#8594;>> </button> OR
+                        <a href="{% url 'login-page' %}"><button class="btn btn-sm btn-primary rounded-0 bg-gradient-primary" style="height: 45px;" type="button">Login &#8594;>> </button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock pageContent %} {% block ScriptBlock %}
+<script>
+    $(function() {
+        $('#create_new').click(function() {
+            uni_modal("<i class='fa fa-plus'></i> Register New User", "{% url 'manage-user' %}")
+        })
+    })
+</script>
+{% endblock ScriptBlock %}
